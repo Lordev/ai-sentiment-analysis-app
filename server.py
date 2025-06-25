@@ -1,17 +1,21 @@
+"""Flask app for detecting emotions in text using IBM Watson NLU."""
+
 from flask import Flask, render_template, request
 from EmotionDetection.emotion_detection import emotion_detector
 
-app = Flask(__name__)  
+app = Flask(__name__)
 
 @app.route('/')
 def index():
+    """Render the homepage."""
     return render_template("index.html")
 
 @app.route("/emotionDetector")
 def sent_emotion_detector():
+    """Analyze text and return emotion scores."""
     text_to_analyze = request.args.get('textToAnalyze')
     response = emotion_detector(text_to_analyze)
-    
+
     if response is None or response.get('dominant_emotion') is None:
         return "Invalid text! Please try again!"
 
@@ -26,4 +30,4 @@ def sent_emotion_detector():
     )
 
 if __name__ == "__main__":
-    app.run(debug=True)  
+    app.run(debug=True)
